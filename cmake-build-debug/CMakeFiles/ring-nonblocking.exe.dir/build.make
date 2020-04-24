@@ -60,15 +60,15 @@ include CMakeFiles/ring-nonblocking.exe.dir/flags.make
 CMakeFiles/ring-nonblocking.exe.dir/ring-nonblocking.cpp.o: CMakeFiles/ring-nonblocking.exe.dir/flags.make
 CMakeFiles/ring-nonblocking.exe.dir/ring-nonblocking.cpp.o: ../ring-nonblocking.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kajetan/studia/hpc/hpc_lab9/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/ring-nonblocking.exe.dir/ring-nonblocking.cpp.o"
-	gcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/ring-nonblocking.exe.dir/ring-nonblocking.cpp.o -c /home/kajetan/studia/hpc/hpc_lab9/ring-nonblocking.cpp
+	CC  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/ring-nonblocking.exe.dir/ring-nonblocking.cpp.o -c /home/kajetan/studia/hpc/hpc_lab9/ring-nonblocking.cpp
 
 CMakeFiles/ring-nonblocking.exe.dir/ring-nonblocking.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/ring-nonblocking.exe.dir/ring-nonblocking.cpp.i"
-	gcc $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/kajetan/studia/hpc/hpc_lab9/ring-nonblocking.cpp > CMakeFiles/ring-nonblocking.exe.dir/ring-nonblocking.cpp.i
+	CC $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/kajetan/studia/hpc/hpc_lab9/ring-nonblocking.cpp > CMakeFiles/ring-nonblocking.exe.dir/ring-nonblocking.cpp.i
 
 CMakeFiles/ring-nonblocking.exe.dir/ring-nonblocking.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ring-nonblocking.exe.dir/ring-nonblocking.cpp.s"
-	gcc $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/kajetan/studia/hpc/hpc_lab9/ring-nonblocking.cpp -o CMakeFiles/ring-nonblocking.exe.dir/ring-nonblocking.cpp.s
+	CC $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/kajetan/studia/hpc/hpc_lab9/ring-nonblocking.cpp -o CMakeFiles/ring-nonblocking.exe.dir/ring-nonblocking.cpp.s
 
 # Object files for target ring-nonblocking.exe
 ring__nonblocking_exe_OBJECTS = \

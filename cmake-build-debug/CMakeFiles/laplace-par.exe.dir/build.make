@@ -60,28 +60,28 @@ include CMakeFiles/laplace-par.exe.dir/flags.make
 CMakeFiles/laplace-par.exe.dir/laplace-common.cpp.o: CMakeFiles/laplace-par.exe.dir/flags.make
 CMakeFiles/laplace-par.exe.dir/laplace-common.cpp.o: ../laplace-common.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kajetan/studia/hpc/hpc_lab9/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/laplace-par.exe.dir/laplace-common.cpp.o"
-	gcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/laplace-par.exe.dir/laplace-common.cpp.o -c /home/kajetan/studia/hpc/hpc_lab9/laplace-common.cpp
+	CC  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/laplace-par.exe.dir/laplace-common.cpp.o -c /home/kajetan/studia/hpc/hpc_lab9/laplace-common.cpp
 
 CMakeFiles/laplace-par.exe.dir/laplace-common.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/laplace-par.exe.dir/laplace-common.cpp.i"
-	gcc $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/kajetan/studia/hpc/hpc_lab9/laplace-common.cpp > CMakeFiles/laplace-par.exe.dir/laplace-common.cpp.i
+	CC $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/kajetan/studia/hpc/hpc_lab9/laplace-common.cpp > CMakeFiles/laplace-par.exe.dir/laplace-common.cpp.i
 
 CMakeFiles/laplace-par.exe.dir/laplace-common.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/laplace-par.exe.dir/laplace-common.cpp.s"
-	gcc $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/kajetan/studia/hpc/hpc_lab9/laplace-common.cpp -o CMakeFiles/laplace-par.exe.dir/laplace-common.cpp.s
+	CC $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/kajetan/studia/hpc/hpc_lab9/laplace-common.cpp -o CMakeFiles/laplace-par.exe.dir/laplace-common.cpp.s
 
 CMakeFiles/laplace-par.exe.dir/laplace-par.cpp.o: CMakeFiles/laplace-par.exe.dir/flags.make
 CMakeFiles/laplace-par.exe.dir/laplace-par.cpp.o: ../laplace-par.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kajetan/studia/hpc/hpc_lab9/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/laplace-par.exe.dir/laplace-par.cpp.o"
-	gcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/laplace-par.exe.dir/laplace-par.cpp.o -c /home/kajetan/studia/hpc/hpc_lab9/laplace-par.cpp
+	CC  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/laplace-par.exe.dir/laplace-par.cpp.o -c /home/kajetan/studia/hpc/hpc_lab9/laplace-par.cpp
 
 CMakeFiles/laplace-par.exe.dir/laplace-par.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/laplace-par.exe.dir/laplace-par.cpp.i"
-	gcc $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/kajetan/studia/hpc/hpc_lab9/laplace-par.cpp > CMakeFiles/laplace-par.exe.dir/laplace-par.cpp.i
+	CC $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/kajetan/studia/hpc/hpc_lab9/laplace-par.cpp > CMakeFiles/laplace-par.exe.dir/laplace-par.cpp.i
 
 CMakeFiles/laplace-par.exe.dir/laplace-par.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/laplace-par.exe.dir/laplace-par.cpp.s"
-	gcc $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/kajetan/studia/hpc/hpc_lab9/laplace-par.cpp -o CMakeFiles/laplace-par.exe.dir/laplace-par.cpp.s
+	CC $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/kajetan/studia/hpc/hpc_lab9/laplace-par.cpp -o CMakeFiles/laplace-par.exe.dir/laplace-par.cpp.s
 
 # Object files for target laplace-par.exe
 laplace__par_exe_OBJECTS = \

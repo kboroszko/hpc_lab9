@@ -2,7 +2,7 @@
 # A template for the 2016 MPI lab at the University of Warsaw.
 # Copyright (C) 2016, Konrad Iwanicki.
 #
-CC          := mpicc
+CC          := CC
 CFLAGS      := -O3 -c -Wall
 LFLAGS      := -O3
 ALL         := \

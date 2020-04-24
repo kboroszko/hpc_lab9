@@ -60,15 +60,15 @@ include CMakeFiles/scatter-gather-max.exe.dir/flags.make
 CMakeFiles/scatter-gather-max.exe.dir/scatter-gather-max.cpp.o: CMakeFiles/scatter-gather-max.exe.dir/flags.make
 CMakeFiles/scatter-gather-max.exe.dir/scatter-gather-max.cpp.o: ../scatter-gather-max.cpp
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/kajetan/studia/hpc/hpc_lab9/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/scatter-gather-max.exe.dir/scatter-gather-max.cpp.o"
-	gcc  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/scatter-gather-max.exe.dir/scatter-gather-max.cpp.o -c /home/kajetan/studia/hpc/hpc_lab9/scatter-gather-max.cpp
+	CC  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/scatter-gather-max.exe.dir/scatter-gather-max.cpp.o -c /home/kajetan/studia/hpc/hpc_lab9/scatter-gather-max.cpp
 
 CMakeFiles/scatter-gather-max.exe.dir/scatter-gather-max.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/scatter-gather-max.exe.dir/scatter-gather-max.cpp.i"
-	gcc $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/kajetan/studia/hpc/hpc_lab9/scatter-gather-max.cpp > CMakeFiles/scatter-gather-max.exe.dir/scatter-gather-max.cpp.i
+	CC $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/kajetan/studia/hpc/hpc_lab9/scatter-gather-max.cpp > CMakeFiles/scatter-gather-max.exe.dir/scatter-gather-max.cpp.i
 
 CMakeFiles/scatter-gather-max.exe.dir/scatter-gather-max.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/scatter-gather-max.exe.dir/scatter-gather-max.cpp.s"
-	gcc $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/kajetan/studia/hpc/hpc_lab9/scatter-gather-max.cpp -o CMakeFiles/scatter-gather-max.exe.dir/scatter-gather-max.cpp.s
+	CC $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/kajetan/studia/hpc/hpc_lab9/scatter-gather-max.cpp -o CMakeFiles/scatter-gather-max.exe.dir/scatter-gather-max.cpp.s
 
 # Object files for target scatter-gather-max.exe
 scatter__gather__max_exe_OBJECTS = \
