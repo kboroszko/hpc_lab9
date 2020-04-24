@@ -115,9 +115,9 @@ static std::tuple<int, double> performAlgorithm(int myRank, int numProcesses, Gr
             }
 
             //compute mine
-            int start = myRank == 0 ? startRowIncl : startRowIncl + 1;
-            int end = myRank == numProcesses - 1 ? endRowExcl : endRowExcl - 1;
-            for (int rowIdx = start; rowIdx < end; ++rowIdx) {
+//            int start = myRank == 0 ? startRowIncl : startRowIncl + 1;
+//            int end = myRank == numProcesses - 1 ? endRowExcl : endRowExcl - 1;
+            for (int rowIdx = startRowIncl; rowIdx < endRowExcl; ++rowIdx) {
                 for (int colIdx = 1 + (rowIdx % 2 == color ? 1 : 0); colIdx < frag->gridDimension - 1; colIdx += 2) {
                     double tmp =
                             (GP(frag, rowIdx - 1, colIdx) +
@@ -135,43 +135,43 @@ static std::tuple<int, double> performAlgorithm(int myRank, int numProcesses, Gr
                 }
             }
 
-            //compute shared
-            if(myRank != 0){
-                int rowIdx = startRowIncl;
-                for (int colIdx = 1 + (rowIdx % 2 == color ? 1 : 0); colIdx < frag->gridDimension - 1; colIdx += 2) {
-                    double tmp =
-                            (GP(frag, rowIdx - 1, colIdx) +
-                             GP(frag, rowIdx + 1, colIdx) +
-                             GP(frag, rowIdx, colIdx - 1) +
-                             GP(frag, rowIdx, colIdx + 1)
-                            ) / 4.0;
-                    double diff = GP(frag, rowIdx, colIdx);
-                    GP(frag, rowIdx, colIdx) = (1.0 - omega) * diff + omega * tmp;
-                    diff = fabs(diff - GP(frag, rowIdx, colIdx));
-
-                    if (diff > maxDiff) {
-                        maxDiff = diff;
-                    }
-                }
-            }
-            if(myRank != numProcesses -1){
-                int rowIdx = endRowExcl - 1;
-                for (int colIdx = 1 + (rowIdx % 2 == color ? 1 : 0); colIdx < frag->gridDimension - 1; colIdx += 2) {
-                    double tmp =
-                            (GP(frag, rowIdx - 1, colIdx) +
-                             GP(frag, rowIdx + 1, colIdx) +
-                             GP(frag, rowIdx, colIdx - 1) +
-                             GP(frag, rowIdx, colIdx + 1)
-                            ) / 4.0;
-                    double diff = GP(frag, rowIdx, colIdx);
-                    GP(frag, rowIdx, colIdx) = (1.0 - omega) * diff + omega * tmp;
-                    diff = fabs(diff - GP(frag, rowIdx, colIdx));
-
-                    if (diff > maxDiff) {
-                        maxDiff = diff;
-                    }
-                }
-            }
+//            //compute shared
+//            if(myRank != 0){
+//                int rowIdx = startRowIncl;
+//                for (int colIdx = 1 + (rowIdx % 2 == color ? 1 : 0); colIdx < frag->gridDimension - 1; colIdx += 2) {
+//                    double tmp =
+//                            (GP(frag, rowIdx - 1, colIdx) +
+//                             GP(frag, rowIdx + 1, colIdx) +
+//                             GP(frag, rowIdx, colIdx - 1) +
+//                             GP(frag, rowIdx, colIdx + 1)
+//                            ) / 4.0;
+//                    double diff = GP(frag, rowIdx, colIdx);
+//                    GP(frag, rowIdx, colIdx) = (1.0 - omega) * diff + omega * tmp;
+//                    diff = fabs(diff - GP(frag, rowIdx, colIdx));
+//
+//                    if (diff > maxDiff) {
+//                        maxDiff = diff;
+//                    }
+//                }
+//            }
+//            if(myRank != numProcesses -1){
+//                int rowIdx = endRowExcl - 1;
+//                for (int colIdx = 1 + (rowIdx % 2 == color ? 1 : 0); colIdx < frag->gridDimension - 1; colIdx += 2) {
+//                    double tmp =
+//                            (GP(frag, rowIdx - 1, colIdx) +
+//                             GP(frag, rowIdx + 1, colIdx) +
+//                             GP(frag, rowIdx, colIdx - 1) +
+//                             GP(frag, rowIdx, colIdx + 1)
+//                            ) / 4.0;
+//                    double diff = GP(frag, rowIdx, colIdx);
+//                    GP(frag, rowIdx, colIdx) = (1.0 - omega) * diff + omega * tmp;
+//                    diff = fabs(diff - GP(frag, rowIdx, colIdx));
+//
+//                    if (diff > maxDiff) {
+//                        maxDiff = diff;
+//                    }
+//                }
+//            }
         }
 
         ++numIterations;
