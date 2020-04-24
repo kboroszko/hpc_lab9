@@ -75,13 +75,6 @@ static void sendRecieve(int fromRank, int toRank, double* fromBuf, double* toBuf
 
         MPI_Recv(toBuf, bufSize, MPI_DOUBLE, toRank, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 
-    } else {
-        MPI_Recv(toBuf, bufSize, MPI_DOUBLE, toRank, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-
-        MPI_Barrier(MPI_COMM_WORLD);
-
-        MPI_Send(fromBuf, bufSize, MPI_DOUBLE, toRank, 0, MPI_COMM_WORLD );
-
     }
     MPI_Barrier(MPI_COMM_WORLD);
 }
@@ -105,13 +98,32 @@ static std::tuple<int, double> performAlgorithm(int myRank, int numProcesses, Gr
             //communicate shared rows
             int otherColor = (color + 1) % 2;
             double* shared_row_top = frag->data[otherColor][0];
-            double* shared_row_bottom = frag->data[otherColor][endRowExcl-1];
+            double* my_row_top = frag->data[otherColor][0];
+            double* shared_row_bottom = frag->data[otherColor][endRowExcl];
+            double* my_row_bottom = frag->data[otherColor][endRowExcl];
 
-            if(myRank != 0){
-                sendRecieve(myRank, myRank - 1, shared_row_top, shared_row_bottom, frag->gridDimension);
+            if(myRank == 0){
+                MPI_Send(my_row_bottom, frag->gridDimension, MPI_DOUBLE, myRank+1, 0, MPI_COMM_WORLD );
+            }else if(myRank == numProcesses - 1) {
+                MPI_Recv(shared_row_top, frag->gridDimension, MPI_DOUBLE, myRank - 1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+            } else {
+                //recieve
+                MPI_Recv(shared_row_top, frag->gridDimension, MPI_DOUBLE, myRank - 1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+                //send forward
+                MPI_Send(my_row_bottom, frag->gridDimension, MPI_DOUBLE, myRank+1, 0, MPI_COMM_WORLD );
             }
-            if(myRank != numProcesses -1){
-                sendRecieve(myRank, myRank+1, shared_row_bottom, shared_row_top, frag->gridDimension);
+
+            MPI_Barrier(MPI_COMM_WORLD);
+
+            if(myRank == 0){
+                MPI_Recv(shared_row_bottom, frag->gridDimension, MPI_DOUBLE, myRank +1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+            }else if(myRank == numProcesses - 1) {
+                MPI_Send(my_row_top, frag->gridDimension, MPI_DOUBLE, myRank - 1, 0, MPI_COMM_WORLD );
+            } else {
+                //recieve
+                MPI_Recv(shared_row_bottom, frag->gridDimension, MPI_DOUBLE, myRank + 1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+                //send forward
+                MPI_Send(my_row_top, frag->gridDimension, MPI_DOUBLE, myRank - 1, 0, MPI_COMM_WORLD );
             }
 
             //compute mine
@@ -135,6 +147,7 @@ static std::tuple<int, double> performAlgorithm(int myRank, int numProcesses, Gr
                 }
             }
 
+            //compute shared
             if(myRank != 0){
                 int rowIdx = startRowIncl;
                 for (int colIdx = 1 + (rowIdx % 2 == color ? 1 : 0); colIdx < frag->gridDimension - 1; colIdx += 2) {
@@ -174,7 +187,7 @@ static std::tuple<int, double> performAlgorithm(int myRank, int numProcesses, Gr
         }
 
         ++numIterations;
-    } while (maxDiff > epsilon);
+    } while (numIterations < 10);
 
     /* no code changes beyond this point should be needed */
 
