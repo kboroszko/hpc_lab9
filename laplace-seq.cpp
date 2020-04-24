@@ -145,6 +145,7 @@ std::tuple<int, double> performAlgorithm(double** points, double omega, double e
             }
         }
         ++numIterations;
+        std::cout << "iter=" << numIterations << "\tdiff=" << maxDiff << "\n";
     }
     while (maxDiff > epsilon);
 
