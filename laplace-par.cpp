@@ -83,7 +83,11 @@ static std::tuple<int, double> performAlgorithm(int myRank, int numProcesses, Gr
         maxDiff = 0.0;
 
         for (int color = 0; color < 2; ++color) {
-            for (int rowIdx = startRowIncl; rowIdx < endRowExcl; ++rowIdx) {
+            //communicate shared rows
+            int otherColor = (color + 1) % 2;
+
+            //compute mine
+            for (int rowIdx = startRowIncl + 1; rowIdx < endRowExcl - 1; ++rowIdx) {
                 for (int colIdx = 1 + (rowIdx % 2 == color ? 1 : 0); colIdx < frag->gridDimension - 1; colIdx += 2) {
                     double tmp =
                             (GP(frag, rowIdx - 1, colIdx) +
@@ -100,6 +104,8 @@ static std::tuple<int, double> performAlgorithm(int myRank, int numProcesses, Gr
                     }
                 }
             }
+
+            //compute shared
         }
 
         ++numIterations;
@@ -134,6 +140,13 @@ int main(int argc, char *argv[]) {
 
     auto gridFragment = new GridFragment(numPointsPerDimension, numProcesses, myRank);
     gridFragment->initialize();
+
+    if (isVerbose) {
+        gridFragment->printEntireGrid(myRank, numProcesses);
+        if(myRank == 0){
+            std::cout << "\n";
+        }
+    }
 
     if (gettimeofday(&startTime, nullptr)) {
         gridFragment->free();
