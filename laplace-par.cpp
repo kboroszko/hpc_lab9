@@ -98,9 +98,9 @@ static std::tuple<int, double> performAlgorithm(int myRank, int numProcesses, Gr
             //communicate shared rows
             int otherColor = (color + 1) % 2;
             double* shared_row_top = frag->data[otherColor][0];
-            double* my_row_top = frag->data[otherColor][0];
+            double* my_row_top = frag->data[color][0];
             double* shared_row_bottom = frag->data[otherColor][endRowExcl];
-            double* my_row_bottom = frag->data[otherColor][endRowExcl];
+            double* my_row_bottom = frag->data[color][endRowExcl];
 
             if(myRank == 0){
                 MPI_Send(my_row_bottom, frag->gridDimension, MPI_DOUBLE, myRank+1, 0, MPI_COMM_WORLD );
