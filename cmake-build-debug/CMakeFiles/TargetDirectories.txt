@@ -1,0 +1,6 @@
+/home/kajetan/studia/hpc/hpc_lab9/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/kajetan/studia/hpc/hpc_lab9/cmake-build-debug/CMakeFiles/scatter-gather-max.exe.dir
+/home/kajetan/studia/hpc/hpc_lab9/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/kajetan/studia/hpc/hpc_lab9/cmake-build-debug/CMakeFiles/ring-nonblocking.exe.dir
+/home/kajetan/studia/hpc/hpc_lab9/cmake-build-debug/CMakeFiles/laplace-seq.exe.dir
+/home/kajetan/studia/hpc/hpc_lab9/cmake-build-debug/CMakeFiles/laplace-par.exe.dir

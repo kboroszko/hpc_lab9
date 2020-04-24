@@ -1,0 +1,42 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/kajetan/studia/hpc/hpc_lab9/laplace-common.cpp
+laplace-common.h
+/home/kajetan/studia/hpc/hpc_lab9/laplace-common.h
+cassert
+-
+mpi.h
+-
+iostream
+-
+iomanip
+-
+
+/home/kajetan/studia/hpc/hpc_lab9/laplace-common.h
+cmath
+-
+
+/home/kajetan/studia/hpc/hpc_lab9/laplace-par.cpp
+iostream
+-
+iomanip
+-
+cstring
+-
+sys/time.h
+-
+mpi.h
+-
+laplace-common.h
+/home/kajetan/studia/hpc/hpc_lab9/laplace-common.h
+
+/home/kajetan/studia/hpc/hpc_lab9/test.cpp
+iostream
+-
+
