@@ -126,6 +126,8 @@ static std::tuple<int, double> performAlgorithm(int myRank, int numProcesses, Gr
                 MPI_Send(my_row_top, frag->gridDimension, MPI_DOUBLE, myRank - 1, 0, MPI_COMM_WORLD );
             }
 
+            MPI_Barrier(MPI_COMM_WORLD);
+
             //compute mine
             int start = myRank == 0 ? startRowIncl : startRowIncl + 1;
             int end = myRank == numProcesses - 1 ? endRowExcl : endRowExcl - 1;
@@ -188,6 +190,8 @@ static std::tuple<int, double> performAlgorithm(int myRank, int numProcesses, Gr
 
         ++numIterations;
         double globalMaxDiff = maxDiff;
+
+        MPI_Barrier(MPI_COMM_WORLD);
         if(myRank == 0){
             MPI_Send(&maxDiff, 1, MPI_DOUBLE, myRank+1, 0, MPI_COMM_WORLD );
             MPI_Recv(&globalMaxDiff, 1, MPI_DOUBLE, numProcesses - 1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
