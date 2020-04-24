@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.10)
 project(mpi_lab_03 CXX)
 
 set(CMAKE_CXX_STANDARD 14)
-SET(CMAKE_CXX_COMPILER CC)
+SET(CMAKE_CXX_COMPILER mpicc)
 
 include_directories(.)
 
