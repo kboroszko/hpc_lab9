@@ -67,18 +67,6 @@ static InputOptions parseInput(int argc, char * argv[], int numProcesses) {
     return {numPointsPerDimension, verbose, errorCode};
 }
 
-static void sendRecieve(int fromRank, int toRank, double* fromBuf, double* toBuf, int bufSize){
-    if(fromRank % 2){
-        MPI_Send(fromBuf, bufSize, MPI_DOUBLE, toRank, 0, MPI_COMM_WORLD );
-
-        MPI_Barrier(MPI_COMM_WORLD);
-
-        MPI_Recv(toBuf, bufSize, MPI_DOUBLE, toRank, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-
-    }
-    MPI_Barrier(MPI_COMM_WORLD);
-}
-
 static std::tuple<int, double> performAlgorithm(int myRank, int numProcesses, GridFragment *frag, double omega, double epsilon) {
     int startRowIncl = frag->firstRowIdxIncl + (myRank == 0 ? 1 : 0);
     int endRowExcl = frag->lastRowIdxExcl - (myRank == numProcesses - 1 ? 1 : 0);
@@ -125,8 +113,6 @@ static std::tuple<int, double> performAlgorithm(int myRank, int numProcesses, Gr
                 //send forward
                 MPI_Send(my_row_top, frag->gridDimension, MPI_DOUBLE, myRank - 1, 0, MPI_COMM_WORLD );
             }
-
-            MPI_Barrier(MPI_COMM_WORLD);
 
             //compute mine
             int start = myRank == 0 ? startRowIncl : startRowIncl + 1;
@@ -191,7 +177,6 @@ static std::tuple<int, double> performAlgorithm(int myRank, int numProcesses, Gr
         ++numIterations;
         double globalMaxDiff = maxDiff;
 
-        MPI_Barrier(MPI_COMM_WORLD);
         if(myRank == 0){
             MPI_Send(&maxDiff, 1, MPI_DOUBLE, myRank+1, 0, MPI_COMM_WORLD );
             MPI_Recv(&globalMaxDiff, 1, MPI_DOUBLE, numProcesses - 1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
@@ -211,6 +196,9 @@ static std::tuple<int, double> performAlgorithm(int myRank, int numProcesses, Gr
                 0,
                 MPI_COMM_WORLD
         );
+        if(myRank == 0){
+            std::cout << "iter=" << numIterations << "\tmaxDiff=" << maxDiff << "\tglobal=" << globalMaxDiff << "\n";
+        }
         maxDiff = globalMaxDiff;
     } while (maxDiff > epsilon && numIterations < 100);
 
