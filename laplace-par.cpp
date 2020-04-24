@@ -67,6 +67,25 @@ static InputOptions parseInput(int argc, char * argv[], int numProcesses) {
     return {numPointsPerDimension, verbose, errorCode};
 }
 
+static void sendRecieve(int fromRank, int toRank, double* fromBuf, double* toBuf, int bufSize){
+    if(fromRank % 2){
+        MPI_Send(fromBuf, bufSize, MPI_DOUBLE, toRank, 0, MPI_COMM_WORLD );
+
+        MPI_Barrier(MPI_COMM_WORLD);
+
+        MPI_Recv(toBuf, bufSize, MPI_DOUBLE, toRank, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+
+    } else {
+        MPI_Recv(toBuf, bufSize, MPI_DOUBLE, toRank, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+
+        MPI_Barrier(MPI_COMM_WORLD);
+
+        MPI_Send(fromBuf, bufSize, MPI_DOUBLE, toRank, 0, MPI_COMM_WORLD );
+
+    }
+    MPI_Barrier(MPI_COMM_WORLD);
+}
+
 static std::tuple<int, double> performAlgorithm(int myRank, int numProcesses, GridFragment *frag, double omega, double epsilon) {
     int startRowIncl = frag->firstRowIdxIncl + (myRank == 0 ? 1 : 0);
     int endRowExcl = frag->lastRowIdxExcl - (myRank == numProcesses - 1 ? 1 : 0);
@@ -85,6 +104,15 @@ static std::tuple<int, double> performAlgorithm(int myRank, int numProcesses, Gr
         for (int color = 0; color < 2; ++color) {
             //communicate shared rows
             int otherColor = (color + 1) % 2;
+            double* shared_row_top = frag->data[otherColor][0];
+            double* shared_row_bottom = frag->data[otherColor][endRowExcl-1];
+
+            if(myRank != 0){
+                sendRecieve(myRank, myRank - 1, shared_row_top, shared_row_bottom, frag->gridDimension);
+            }
+            if(myRank != numProcesses -1){
+                sendRecieve(myRank, myRank+1, shared_row_bottom, shared_row_top, frag->gridDimension);
+            }
 
             //compute mine
             int start = myRank == 0 ? startRowIncl : startRowIncl + 1;
@@ -107,7 +135,42 @@ static std::tuple<int, double> performAlgorithm(int myRank, int numProcesses, Gr
                 }
             }
 
-            //compute shared
+            if(myRank != 0){
+                int rowIdx = startRowIncl;
+                for (int colIdx = 1 + (rowIdx % 2 == color ? 1 : 0); colIdx < frag->gridDimension - 1; colIdx += 2) {
+                    double tmp =
+                            (GP(frag, rowIdx - 1, colIdx) +
+                             GP(frag, rowIdx + 1, colIdx) +
+                             GP(frag, rowIdx, colIdx - 1) +
+                             GP(frag, rowIdx, colIdx + 1)
+                            ) / 4.0;
+                    double diff = GP(frag, rowIdx, colIdx);
+                    GP(frag, rowIdx, colIdx) = (1.0 - omega) * diff + omega * tmp;
+                    diff = fabs(diff - GP(frag, rowIdx, colIdx));
+
+                    if (diff > maxDiff) {
+                        maxDiff = diff;
+                    }
+                }
+            }
+            if(myRank != numProcesses -1){
+                int rowIdx = endRowExcl - 1;
+                for (int colIdx = 1 + (rowIdx % 2 == color ? 1 : 0); colIdx < frag->gridDimension - 1; colIdx += 2) {
+                    double tmp =
+                            (GP(frag, rowIdx - 1, colIdx) +
+                             GP(frag, rowIdx + 1, colIdx) +
+                             GP(frag, rowIdx, colIdx - 1) +
+                             GP(frag, rowIdx, colIdx + 1)
+                            ) / 4.0;
+                    double diff = GP(frag, rowIdx, colIdx);
+                    GP(frag, rowIdx, colIdx) = (1.0 - omega) * diff + omega * tmp;
+                    diff = fabs(diff - GP(frag, rowIdx, colIdx));
+
+                    if (diff > maxDiff) {
+                        maxDiff = diff;
+                    }
+                }
+            }
         }
 
         ++numIterations;
