@@ -212,7 +212,7 @@ static std::tuple<int, double> performAlgorithm(int myRank, int numProcesses, Gr
                 MPI_COMM_WORLD
         );
         maxDiff = globalMaxDiff;
-    } while (maxDiff > epsilon);
+    } while (maxDiff > epsilon && numIterations < 100);
 
     /* no code changes beyond this point should be needed */
 
