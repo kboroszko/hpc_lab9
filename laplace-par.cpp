@@ -187,7 +187,26 @@ static std::tuple<int, double> performAlgorithm(int myRank, int numProcesses, Gr
         }
 
         ++numIterations;
-    } while (numIterations < 65);
+        double globalMaxDiff = maxDiff;
+        if(myRank == 0){
+            MPI_Send(&maxDiff, 1, MPI_DOUBLE, myRank+1, 0, MPI_COMM_WORLD );
+            MPI_Recv(&globalMaxDiff, 1, MPI_DOUBLE, numProcesses - 1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+        } else {
+            //recieve
+            MPI_Recv(&globalMaxDiff, 1, MPI_DOUBLE, myRank - 1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+            globalMaxDiff = maxDiff > globalMaxDiff ? maxDiff : globalMaxDiff;
+            //send forward
+            MPI_Send(&globalMaxDiff, 1, MPI_DOUBLE, (myRank+1)%numProcesses, 0, MPI_COMM_WORLD );
+        }
+        MPI_Bcast(
+                &globalMaxDiff,
+                1,
+                MPI_DOUBLE,
+                0,
+                MPI_COMM_WORLD
+        );
+        maxDiff = globalMaxDiff;
+    } while (maxDiff > epsilon);
 
     /* no code changes beyond this point should be needed */
 
