@@ -198,6 +198,8 @@ static std::tuple<int, double> performAlgorithm(int myRank, int numProcesses, Gr
             //send forward
             MPI_Send(&globalMaxDiff, 1, MPI_DOUBLE, (myRank+1)%numProcesses, 0, MPI_COMM_WORLD );
         }
+
+        MPI_Barrier(MPI_COMM_WORLD);
         MPI_Bcast(
                 &globalMaxDiff,
                 1,
