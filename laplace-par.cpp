@@ -91,28 +91,29 @@ static std::tuple<int, double> performAlgorithm(int myRank, int numProcesses, Gr
             double* shared_row_bottom = frag->data[otherColor][rows-1];
             double* my_row_bottom = frag->data[otherColor][rows-2];
 
+            int bufSize = (frag->gridDimension + 1)/2;
             if(myRank == 0){
-                MPI_Send(my_row_bottom, frag->gridDimension, MPI_DOUBLE, myRank+1, 0, MPI_COMM_WORLD );
+                MPI_Send(my_row_bottom, bufSize, MPI_DOUBLE, myRank+1, 0, MPI_COMM_WORLD );
             }else if(myRank == numProcesses - 1) {
-                MPI_Recv(shared_row_top, frag->gridDimension, MPI_DOUBLE, myRank - 1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+                MPI_Recv(shared_row_top, bufSize, MPI_DOUBLE, myRank - 1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
             } else {
                 //recieve
-                MPI_Recv(shared_row_top, frag->gridDimension, MPI_DOUBLE, myRank - 1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+                MPI_Recv(shared_row_top, bufSize, MPI_DOUBLE, myRank - 1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
                 //send forward
-                MPI_Send(my_row_bottom, frag->gridDimension, MPI_DOUBLE, myRank+1, 0, MPI_COMM_WORLD );
+                MPI_Send(my_row_bottom, bufSize, MPI_DOUBLE, myRank+1, 0, MPI_COMM_WORLD );
             }
 
             MPI_Barrier(MPI_COMM_WORLD);
 
             if(myRank == 0){
-                MPI_Recv(shared_row_bottom, frag->gridDimension, MPI_DOUBLE, myRank +1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+                MPI_Recv(shared_row_bottom, bufSize, MPI_DOUBLE, myRank +1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
             }else if(myRank == numProcesses - 1) {
-                MPI_Send(my_row_top, frag->gridDimension, MPI_DOUBLE, myRank - 1, 0, MPI_COMM_WORLD );
+                MPI_Send(my_row_top, bufSize, MPI_DOUBLE, myRank - 1, 0, MPI_COMM_WORLD );
             } else {
                 //recieve
-                MPI_Recv(shared_row_bottom, frag->gridDimension, MPI_DOUBLE, myRank + 1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+                MPI_Recv(shared_row_bottom, bufSize, MPI_DOUBLE, myRank + 1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
                 //send forward
-                MPI_Send(my_row_top, frag->gridDimension, MPI_DOUBLE, myRank - 1, 0, MPI_COMM_WORLD );
+                MPI_Send(my_row_top, bufSize, MPI_DOUBLE, myRank - 1, 0, MPI_COMM_WORLD );
             }
 
             //compute mine
