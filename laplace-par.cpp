@@ -68,8 +68,8 @@ static InputOptions parseInput(int argc, char * argv[], int numProcesses) {
 }
 
 static std::tuple<int, double> performAlgorithm(int myRank, int numProcesses, GridFragment *frag, double omega, double epsilon) {
-    int startRowIncl = frag->firstRowIdxIncl + 1;
-    int endRowExcl = frag->lastRowIdxExcl - 1;
+    int startRowIncl = frag->firstRowIdxIncl + (myRank == 0 ? 1 : 0);
+    int endRowExcl = frag->lastRowIdxExcl - (myRank == numProcesses - 1 ? 1 : 0);
 
     double maxDiff = 0;
     int numIterations = 0;
@@ -121,7 +121,6 @@ static std::tuple<int, double> performAlgorithm(int myRank, int numProcesses, Gr
                 MPI_Send(my_row_top, bufSize, MPI_DOUBLE, myRank - 1, 0, MPI_COMM_WORLD );
             }
 
-            //compute mine
 //            int start = myRank == 0 ? startRowIncl : startRowIncl + 1;
 //            int end = myRank == numProcesses - 1 ? endRowExcl : endRowExcl - 1;
             for (int rowIdx = startRowIncl; rowIdx < endRowExcl; ++rowIdx) {
@@ -142,43 +141,6 @@ static std::tuple<int, double> performAlgorithm(int myRank, int numProcesses, Gr
                 }
             }
 
-            //compute shared
-            if(myRank != 0){
-                int rowIdx = frag->firstRowIdxIncl;
-                for (int colIdx = 1 + (rowIdx % 2 == color ? 1 : 0); colIdx < frag->gridDimension - 1; colIdx += 2) {
-                    double tmp =
-                            (GP(frag, rowIdx - 1, colIdx) +
-                             GP(frag, rowIdx + 1, colIdx) +
-                             GP(frag, rowIdx, colIdx - 1) +
-                             GP(frag, rowIdx, colIdx + 1)
-                            ) / 4.0;
-                    double diff = GP(frag, rowIdx, colIdx);
-                    GP(frag, rowIdx, colIdx) = (1.0 - omega) * diff + omega * tmp;
-                    diff = fabs(diff - GP(frag, rowIdx, colIdx));
-
-                    if (diff > maxDiff) {
-                        maxDiff = diff;
-                    }
-                }
-            }
-            if(myRank != numProcesses -1){
-                int rowIdx = frag->lastRowIdxExcl - 1;
-                for (int colIdx = 1 + (rowIdx % 2 == color ? 1 : 0); colIdx < frag->gridDimension - 1; colIdx += 2) {
-                    double tmp =
-                            (GP(frag, rowIdx - 1, colIdx) +
-                             GP(frag, rowIdx + 1, colIdx) +
-                             GP(frag, rowIdx, colIdx - 1) +
-                             GP(frag, rowIdx, colIdx + 1)
-                            ) / 4.0;
-                    double diff = GP(frag, rowIdx, colIdx);
-                    GP(frag, rowIdx, colIdx) = (1.0 - omega) * diff + omega * tmp;
-                    diff = fabs(diff - GP(frag, rowIdx, colIdx));
-
-                    if (diff > maxDiff) {
-                        maxDiff = diff;
-                    }
-                }
-            }
         }
 
         ++numIterations;
@@ -237,67 +199,56 @@ int main(int argc, char *argv[]) {
     double omega = Utils::getRelaxationFactor(numPointsPerDimension);
     double epsilon = Utils::getToleranceValue(numPointsPerDimension);
 
-    int numPoints = 10 > numProcesses ? 10 : numProcesses;
-    while(numPoints < 2000){
+    auto gridFragment = new GridFragment(numPointsPerDimension, numProcesses, myRank);
+    gridFragment->initialize();
 
-        auto gridFragment = new GridFragment(numPoints, numProcesses, myRank);
-        gridFragment->initialize();
-
-        if (isVerbose) {
-            gridFragment->printEntireGrid(myRank, numProcesses);
-            if(myRank == 0){
-                std::cout << "\n";
-            }
-        }
-
-        if (gettimeofday(&startTime, nullptr)) {
-            gridFragment->free();
-            std::cerr << "ERROR: Gettimeofday failed!" << std::endl;
-            MPI_Finalize();
-            return 6;
-        }
-
-        /* Start of computations. */
-
-        auto result = performAlgorithm(myRank, numProcesses, gridFragment, omega, epsilon);
-
-        /* End of computations. */
-
-        if (gettimeofday(&endTime, nullptr)) {
-            gridFragment->free();
-            std::cerr << "ERROR: Gettimeofday failed!" << std::endl;
-            MPI_Finalize();
-            return 7;
-        }
-
-        double duration =
-                ((double) endTime.tv_sec + ((double) endTime.tv_usec / 1000000.0)) -
-                ((double) startTime.tv_sec + ((double) startTime.tv_usec / 1000000.0));
-
-        std::cerr << numPoints << "\t" << numProcesses << "\t"
-                  << std::fixed
-                  << std::setprecision(10)
-                  << duration << "\t"
-                  << std::endl;
-
-        if (isVerbose) {
-            gridFragment->printEntireGrid(myRank, numProcesses);
-        }
-
-        gridFragment->free();
-
-
-        if(numPoints < 200){
-            numPoints += 50;
-        } else {
-            numPoints += 200;
+    if (isVerbose) {
+        gridFragment->printEntireGrid(myRank, numProcesses);
+        if(myRank == 0){
+            std::cout << "\n";
         }
     }
 
+    if (gettimeofday(&startTime, nullptr)) {
+        gridFragment->free();
+        std::cerr << "ERROR: Gettimeofday failed!" << std::endl;
+        MPI_Finalize();
+        return 6;
+    }
 
+    /* Start of computations. */
 
+    auto result = performAlgorithm(myRank, numProcesses, gridFragment, omega, epsilon);
 
+    /* End of computations. */
 
+    if (gettimeofday(&endTime, nullptr)) {
+        gridFragment->free();
+        std::cerr << "ERROR: Gettimeofday failed!" << std::endl;
+        MPI_Finalize();
+        return 7;
+    }
+
+    double duration =
+            ((double) endTime.tv_sec + ((double) endTime.tv_usec / 1000000.0)) -
+            ((double) startTime.tv_sec + ((double) startTime.tv_usec / 1000000.0));
+
+    std::cerr << "Statistics: duration(s)="
+              << std::fixed
+              << std::setprecision(10)
+              << duration << " #iters="
+              << std::get<0>(result)
+              << " diff="
+              << std::get<1>(result)
+              << " epsilon="
+              << epsilon
+              << std::endl;
+
+    if (isVerbose) {
+        gridFragment->printEntireGrid(myRank, numProcesses);
+    }
+
+    gridFragment->free();
     MPI_Finalize();
     return 0;
 }
