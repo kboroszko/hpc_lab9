@@ -68,8 +68,8 @@ static InputOptions parseInput(int argc, char * argv[], int numProcesses) {
 }
 
 static std::tuple<int, double> performAlgorithm(int myRank, int numProcesses, GridFragment *frag, double omega, double epsilon) {
-    int startRowIncl = frag->firstRowIdxIncl + (myRank == 0 ? 1 : 0);
-    int endRowExcl = frag->lastRowIdxExcl - (myRank == numProcesses - 1 ? 1 : 0);
+    int startRowIncl = frag->firstRowIdxIncl + 1;
+    int endRowExcl = frag->lastRowIdxExcl - 1;
 
     double maxDiff = 0;
     int numIterations = 0;
@@ -142,43 +142,43 @@ static std::tuple<int, double> performAlgorithm(int myRank, int numProcesses, Gr
                 }
             }
 
-//            //compute shared
-//            if(myRank != 0){
-//                int rowIdx = startRowIncl;
-//                for (int colIdx = 1 + (rowIdx % 2 == color ? 1 : 0); colIdx < frag->gridDimension - 1; colIdx += 2) {
-//                    double tmp =
-//                            (GP(frag, rowIdx - 1, colIdx) +
-//                             GP(frag, rowIdx + 1, colIdx) +
-//                             GP(frag, rowIdx, colIdx - 1) +
-//                             GP(frag, rowIdx, colIdx + 1)
-//                            ) / 4.0;
-//                    double diff = GP(frag, rowIdx, colIdx);
-//                    GP(frag, rowIdx, colIdx) = (1.0 - omega) * diff + omega * tmp;
-//                    diff = fabs(diff - GP(frag, rowIdx, colIdx));
-//
-//                    if (diff > maxDiff) {
-//                        maxDiff = diff;
-//                    }
-//                }
-//            }
-//            if(myRank != numProcesses -1){
-//                int rowIdx = endRowExcl - 1;
-//                for (int colIdx = 1 + (rowIdx % 2 == color ? 1 : 0); colIdx < frag->gridDimension - 1; colIdx += 2) {
-//                    double tmp =
-//                            (GP(frag, rowIdx - 1, colIdx) +
-//                             GP(frag, rowIdx + 1, colIdx) +
-//                             GP(frag, rowIdx, colIdx - 1) +
-//                             GP(frag, rowIdx, colIdx + 1)
-//                            ) / 4.0;
-//                    double diff = GP(frag, rowIdx, colIdx);
-//                    GP(frag, rowIdx, colIdx) = (1.0 - omega) * diff + omega * tmp;
-//                    diff = fabs(diff - GP(frag, rowIdx, colIdx));
-//
-//                    if (diff > maxDiff) {
-//                        maxDiff = diff;
-//                    }
-//                }
-//            }
+            //compute shared
+            if(myRank != 0){
+                int rowIdx = frag->firstRowIdxIncl;
+                for (int colIdx = 1 + (rowIdx % 2 == color ? 1 : 0); colIdx < frag->gridDimension - 1; colIdx += 2) {
+                    double tmp =
+                            (GP(frag, rowIdx - 1, colIdx) +
+                             GP(frag, rowIdx + 1, colIdx) +
+                             GP(frag, rowIdx, colIdx - 1) +
+                             GP(frag, rowIdx, colIdx + 1)
+                            ) / 4.0;
+                    double diff = GP(frag, rowIdx, colIdx);
+                    GP(frag, rowIdx, colIdx) = (1.0 - omega) * diff + omega * tmp;
+                    diff = fabs(diff - GP(frag, rowIdx, colIdx));
+
+                    if (diff > maxDiff) {
+                        maxDiff = diff;
+                    }
+                }
+            }
+            if(myRank != numProcesses -1){
+                int rowIdx = frag->lastRowIdxExcl - 1;
+                for (int colIdx = 1 + (rowIdx % 2 == color ? 1 : 0); colIdx < frag->gridDimension - 1; colIdx += 2) {
+                    double tmp =
+                            (GP(frag, rowIdx - 1, colIdx) +
+                             GP(frag, rowIdx + 1, colIdx) +
+                             GP(frag, rowIdx, colIdx - 1) +
+                             GP(frag, rowIdx, colIdx + 1)
+                            ) / 4.0;
+                    double diff = GP(frag, rowIdx, colIdx);
+                    GP(frag, rowIdx, colIdx) = (1.0 - omega) * diff + omega * tmp;
+                    diff = fabs(diff - GP(frag, rowIdx, colIdx));
+
+                    if (diff > maxDiff) {
+                        maxDiff = diff;
+                    }
+                }
+            }
         }
 
         ++numIterations;
@@ -207,8 +207,8 @@ static std::tuple<int, double> performAlgorithm(int myRank, int numProcesses, Gr
         MPI_Barrier(MPI_COMM_WORLD);
 
         maxDiff = globalMaxDiff;
-        std::cout << "node" << myRank <<"  iter=" << numIterations << "\tdiff=" << maxDiff << "\tglobal=" << globalMaxDiff << "\n";
-    } while (maxDiff > epsilon && numIterations < 100);
+//        std::cout << "node" << myRank <<"  iter=" << numIterations << "\tdiff=" << maxDiff << "\tglobal=" << globalMaxDiff << "\n";
+    } while (maxDiff > epsilon);
 
     /* no code changes beyond this point should be needed */
 
