@@ -72,10 +72,10 @@ static void initializePoints(double **points, int numPointsPerDimension) {
 
 static void printPoints(double **points, int numPointsPerDimension) {
     for (int i = 0; i < numPointsPerDimension; ++i) {
-        std::cout << std::fixed << std::setprecision(10) << points[i][0];
+        std::cout << std::fixed << std::setprecision(5) << points[i][0];
 
         for (int j = 1; j < numPointsPerDimension; ++j) {
-            std::cout << " " << std::fixed << std::setprecision(10) << points[i][j];
+            std::cout << " " << std::fixed << std::setprecision(5) << points[i][j];
         }
 
         std::cout << std::endl;
@@ -145,7 +145,7 @@ std::tuple<int, double> performAlgorithm(double** points, double omega, double e
             }
         }
         ++numIterations;
-        std::cout << "iter=" << numIterations << "\tdiff=" << maxDiff << "\n";
+//        std::cout << "iter=" << numIterations << "\tdiff=" << maxDiff << "\n";
     }
     while (maxDiff > epsilon);
 
