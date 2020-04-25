@@ -73,7 +73,6 @@ static std::tuple<int, double> performAlgorithm(int myRank, int numProcesses, Gr
 
     double maxDiff = 0;
     int numIterations = 0;
-
     /* TODO: change the following code fragment */
     /* Implement asynchronous communication of neighboring elements */
     /* and computation of the grid */
@@ -84,10 +83,20 @@ static std::tuple<int, double> performAlgorithm(int myRank, int numProcesses, Gr
 
         for (int color = 0; color < 2; ++color) {
             //communicate shared rows
+            if(numIterations < 2){
+                for(int r = 0; r < numProcesses; r++){
+                    MPI_Barrier(MPI_COMM_WORLD);
+                    int howManyRows = frag->lastRowIdxExcl - frag->firstRowIdxIncl;
+                    if(myRank == r){
+                        std::cout << "node" << myRank << " endRowExcl=" << endRowExcl << "\tmax=" << howManyRows << "\n";
+                    }
+                }
+            }
+
             int otherColor = (color + 1) % 2;
-            double* shared_row_top = frag->data[otherColor][1];
+            double* shared_row_top = frag->data[otherColor][0];
             double* my_row_top = frag->data[otherColor][1];
-            double* shared_row_bottom = frag->data[otherColor][endRowExcl-1];
+            double* shared_row_bottom = frag->data[otherColor][endRowExcl];
             double* my_row_bottom = frag->data[otherColor][endRowExcl-1];
 
             if(myRank == 0){
