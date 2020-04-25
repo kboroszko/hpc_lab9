@@ -84,12 +84,17 @@ static std::tuple<int, double> performAlgorithm(int myRank, int numProcesses, Gr
         for (int color = 0; color < 2; ++color) {
             //communicate shared rows
 
+
+
             int otherColor = (color + 1) % 2;
             int rows = frag->lastRowIdxExcl - frag->firstRowIdxIncl;
             double* shared_row_top = frag->data[otherColor][0];
             double* my_row_top = frag->data[otherColor][1];
             double* shared_row_bottom = frag->data[otherColor][rows-1];
             double* my_row_bottom = frag->data[otherColor][rows-2];
+
+            std::cout << "node" << myRank <<"  iter=" << numIterations << "\tdiff=" << maxDiff << "\tcolor=" << color
+                      << "\tother=" << otherColor << "\tmyrow=" << rows-1 << "\n" ;
 
             int bufSize = (frag->gridDimension + 1)/2;
             if(myRank == 0){
@@ -198,7 +203,6 @@ static std::tuple<int, double> performAlgorithm(int myRank, int numProcesses, Gr
                 0,
                 MPI_COMM_WORLD
         );
-            std::cout << "node" << myRank <<"  iter=" << numIterations << "\tnode0=" << maxDiff << "\n" ;
 
         MPI_Barrier(MPI_COMM_WORLD);
         maxDiff = globalMaxDiff;
