@@ -90,11 +90,11 @@ static std::tuple<int, double> performAlgorithm(int myRank, int numProcesses, Gr
             int rows = frag->lastRowIdxExcl - frag->firstRowIdxIncl;
             double* shared_row_top = frag->data[otherColor][0];
             double* my_row_top = frag->data[otherColor][1];
-            double* shared_row_bottom = frag->data[otherColor][rows-1];
-            double* my_row_bottom = frag->data[otherColor][rows-2];
+            double* shared_row_bottom = frag->data[otherColor][rows+1];
+            double* my_row_bottom = frag->data[otherColor][rows];
 
             std::cout << "node" << myRank <<"  iter=" << numIterations << "\tdiff=" << maxDiff << "\tcolor=" << color
-                      << "\tother=" << otherColor << "\tmyrow=" << rows-1 << "\n" ;
+                      << "\tother=" << otherColor << "\trow=" << rows << "\n" ;
 
             int bufSize = (frag->gridDimension + 1)/2;
             if(myRank == 0){
