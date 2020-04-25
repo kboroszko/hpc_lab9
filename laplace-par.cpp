@@ -237,7 +237,7 @@ int main(int argc, char *argv[]) {
     double omega = Utils::getRelaxationFactor(numPointsPerDimension);
     double epsilon = Utils::getToleranceValue(numPointsPerDimension);
 
-    int numPoints = 10;
+    int numPoints = 10 > numProcesses ? 10 : numProcesses;
     while(numPoints < 2000){
 
         auto gridFragment = new GridFragment(numPoints, numProcesses, myRank);
