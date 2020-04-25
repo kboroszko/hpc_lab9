@@ -146,17 +146,6 @@ static std::tuple<int, double> performAlgorithm(int myRank, int numProcesses, Gr
         ++numIterations;
         double globalMaxDiff = maxDiff;
 
-        if(myRank == 0){
-            MPI_Send(&maxDiff, 1, MPI_DOUBLE, myRank+1, 0, MPI_COMM_WORLD );
-            MPI_Recv(&globalMaxDiff, 1, MPI_DOUBLE, numProcesses - 1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-        } else {
-            //recieve
-            MPI_Recv(&globalMaxDiff, 1, MPI_DOUBLE, myRank - 1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-            globalMaxDiff = maxDiff > globalMaxDiff ? maxDiff : globalMaxDiff;
-            //send forward
-            MPI_Send(&globalMaxDiff, 1, MPI_DOUBLE, (myRank+1)%numProcesses, 0, MPI_COMM_WORLD );
-        }
-
         MPI_Allreduce(
                 &maxDiff,
                 &globalMaxDiff,
@@ -234,11 +223,14 @@ int main(int argc, char *argv[]) {
                 ((double) endTime.tv_sec + ((double) endTime.tv_usec / 1000000.0)) -
                 ((double) startTime.tv_sec + ((double) startTime.tv_usec / 1000000.0));
 
-        std::cerr << numPoints << "\t" << numProcesses << "\t"
-                  << std::fixed
-                  << std::setprecision(10)
-                  << duration << "\t"
-                  << std::endl;
+        if(myRank == 0){
+            std::cerr << numPoints << "\t" << numProcesses << "\t"
+                      << std::fixed
+                      << std::setprecision(10)
+                      << duration << "\t"
+                      << std::endl;
+        }
+
 
         if (isVerbose) {
             gridFragment->printEntireGrid(myRank, numProcesses);
