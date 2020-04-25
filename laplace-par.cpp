@@ -88,8 +88,8 @@ static std::tuple<int, double> performAlgorithm(int myRank, int numProcesses, Gr
             int rows = frag->lastRowIdxExcl - frag->firstRowIdxIncl;
             double* shared_row_top = frag->data[otherColor][0];
             double* my_row_top = frag->data[otherColor][1];
-            double* shared_row_bottom = frag->data[otherColor][rows - (otherColor % 2)];
-            double* my_row_bottom = frag->data[otherColor][rows-1 - (otherColor % 2)];
+            double* shared_row_bottom = frag->data[otherColor][rows];
+            double* my_row_bottom = frag->data[otherColor][rows-1];
 
             if(myRank == 0){
                 MPI_Send(my_row_bottom, frag->gridDimension, MPI_DOUBLE, myRank+1, 0, MPI_COMM_WORLD );
