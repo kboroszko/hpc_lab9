@@ -1,0 +1,269 @@
+commit fb9f8674634c285b691ff674388896800939df6b
+Author: KAJETAN <kajetan.boroszko@gmail.com>
+Date:   Sat Apr 25 16:04:03 2020 +0200
+
+    added result files
+
+commit 76ef3095c8e3adb1a2d60f1633df54c23c2a3416
+Author: KAJETAN <kajetan.boroszko@gmail.com>
+Date:   Sat Apr 25 15:10:42 2020 +0200
+
+    batch files
+
+commit 8c58d468b63a3a686c557916e61875c30db5d72a
+Author: kboroszko <kajetan.boroszko@gmail.com>
+Date:   Sat Apr 25 14:47:46 2020 +0200
+
+    fixed multiple
+
+commit 2e19a0cf5198bee2f8b28724aae589cb8276f442
+Author: kboroszko <kajetan.boroszko@gmail.com>
+Date:   Sat Apr 25 14:13:38 2020 +0200
+
+    main for loop
+
+commit 701fe49dc0de1f9a27bb5047e25b710f17b583ae
+Author: kboroszko <kajetan.boroszko@gmail.com>
+Date:   Sat Apr 25 14:01:42 2020 +0200
+
+    seq print
+
+commit bff111095d08228404c4e01234d1c085ee870ee1
+Author: kboroszko <kajetan.boroszko@gmail.com>
+Date:   Sat Apr 25 13:54:56 2020 +0200
+
+    my work first
+
+commit a8fd4ba4dc35946ee3d6ef453fd6736070d2587a
+Author: kboroszko <kajetan.boroszko@gmail.com>
+Date:   Sat Apr 25 13:50:06 2020 +0200
+
+    dif print
+
+commit 0066c525f7cb5a43496a7b630b15562e25e3339f
+Author: kboroszko <kajetan.boroszko@gmail.com>
+Date:   Sat Apr 25 13:47:34 2020 +0200
+
+    rows duh
+
+commit f89b3151cccaf6602ee26cad2719b2f8e8d04962
+Author: kboroszko <kajetan.boroszko@gmail.com>
+Date:   Sat Apr 25 13:39:45 2020 +0200
+
+    rows printing
+
+commit 327f517c2b815e99d95bc96ee9bbf16135902e7c
+Author: kboroszko <kajetan.boroszko@gmail.com>
+Date:   Sat Apr 25 13:30:26 2020 +0200
+
+    rows bufsize
+
+commit 43ddc4a9a9fef04162c02b111a3137f720c95951
+Author: kboroszko <kajetan.boroszko@gmail.com>
+Date:   Sat Apr 25 13:28:32 2020 +0200
+
+    rows back
+
+commit 95c191df3a929813718e4433f096330580b9b464
+Author: kboroszko <kajetan.boroszko@gmail.com>
+Date:   Sat Apr 25 13:22:23 2020 +0200
+
+    rows xd
+
+commit 35004a0286a35ab3a09da5dea450fe4a8b1c36fc
+Author: kboroszko <kajetan.boroszko@gmail.com>
+Date:   Sat Apr 25 12:32:01 2020 +0200
+
+    rows jezzzzzzu
+
+commit ede8bf2e7098efbc1b8c9d608869be5e8148a431
+Author: kboroszko <kajetan.boroszko@gmail.com>
+Date:   Sat Apr 25 12:28:55 2020 +0200
+
+    rows jezu
+
+commit 02939ec318a8f426945f80d692eda6e798b00d70
+Author: kboroszko <kajetan.boroszko@gmail.com>
+Date:   Sat Apr 25 12:15:47 2020 +0200
+
+    rows chyba
+
+commit d4b8bb9c141c0a71b4e1da4f770bf096387cb128
+Author: kboroszko <kajetan.boroszko@gmail.com>
+Date:   Sat Apr 25 12:11:56 2020 +0200
+
+    rows moze
+
+commit 44abd3ebfa8c86b1cfff24810b36b4e5592b600e
+Author: kboroszko <kajetan.boroszko@gmail.com>
+Date:   Sat Apr 25 12:03:55 2020 +0200
+
+    rows dobrze
+
+commit 0fbfb67b4cdb5c02dcc80efb7387e73fdf5be91d
+Author: kboroszko <kajetan.boroszko@gmail.com>
+Date:   Sat Apr 25 11:15:40 2020 +0200
+
+    rows hello
+
+commit ead71d98ac1cc01983340bbff6cb2736a923f41e
+Author: kboroszko <kajetan.boroszko@gmail.com>
+Date:   Sat Apr 25 11:04:40 2020 +0200
+
+    rows print
+
+commit 22b927c17b392d33f721a3bbb4c011825e674359
+Author: kboroszko <kajetan.boroszko@gmail.com>
+Date:   Fri Apr 24 20:35:22 2020 +0200
+
+    rows
+
+commit 3ee4a03f8b942d3cab92a87b4fc008d7d4e74757
+Author: kboroszko <kajetan.boroszko@gmail.com>
+Date:   Fri Apr 24 20:31:36 2020 +0200
+
+    seq
+
+commit bb55a96302bed38165af1a34a686a2803408fdff
+Author: kboroszko <kajetan.boroszko@gmail.com>
+Date:   Fri Apr 24 20:12:45 2020 +0200
+
+    cc
+
+commit a8030955c3aab9845aeeb87964161616689df60a
+Author: kboroszko <kajetan.boroszko@gmail.com>
+Date:   Fri Apr 24 20:11:57 2020 +0200
+
+    gcc
+
+commit bedce747d9f373bfb33eccedabdb31d2469f0df9
+Author: kboroszko <kajetan.boroszko@gmail.com>
+Date:   Fri Apr 24 20:08:19 2020 +0200
+
+    mpicc
+
+commit 4447955cc79f1340bee6bd27fc6d35cb954284c5
+Author: kboroszko <kajetan.boroszko@gmail.com>
+Date:   Fri Apr 24 20:07:19 2020 +0200
+
+    seq verbose
+
+commit ca125c3fe33e96fc3a2825c309afc76ff8520a7a
+Author: kboroszko <kajetan.boroszko@gmail.com>
+Date:   Fri Apr 24 19:54:05 2020 +0200
+
+    color good
+
+commit af9b8b88c2ae938fa86bf3bfe72dc900eeafa396
+Author: kboroszko <kajetan.boroszko@gmail.com>
+Date:   Fri Apr 24 19:51:04 2020 +0200
+
+    max dif
+
+commit c7945a40f9a5f34b669cfd97376e6a1534374b13
+Author: kboroszko <kajetan.boroszko@gmail.com>
+Date:   Fri Apr 24 19:44:36 2020 +0200
+
+    maybe color? 2
+
+commit aa913a0fd617a18847f0214706ae1e9a29cc6873
+Author: kboroszko <kajetan.boroszko@gmail.com>
+Date:   Fri Apr 24 19:41:22 2020 +0200
+
+    maybe color?
+
+commit 878b418d27cc2f6e84726f7f8b03fcdd0d0c884f
+Author: kboroszko <kajetan.boroszko@gmail.com>
+Date:   Fri Apr 24 19:38:40 2020 +0200
+
+    cleanup and printing
+
+commit ce2c605d7dd969da569959c831ff60493a3bf96f
+Author: kboroszko <kajetan.boroszko@gmail.com>
+Date:   Fri Apr 24 19:32:18 2020 +0200
+
+    iters
+
+commit f58e312f8b53f3a6bf77dcd6dcb740f86108779e
+Author: kboroszko <kajetan.boroszko@gmail.com>
+Date:   Fri Apr 24 19:30:15 2020 +0200
+
+    barieeeers
+
+commit 168568b2c42e49022cb37e74e21e5d34ac1ef187
+Author: kboroszko <kajetan.boroszko@gmail.com>
+Date:   Fri Apr 24 19:27:44 2020 +0200
+
+    barrier
+
+commit f5941a65ebb1a4aa1672db9200a89cc3e1ab635d
+Author: kboroszko <kajetan.boroszko@gmail.com>
+Date:   Fri Apr 24 19:24:22 2020 +0200
+
+    maxDiff
+
+commit f370f24f4af8e6cdbd92ea531d9949d9907ac878
+Author: kboroszko <kajetan.boroszko@gmail.com>
+Date:   Fri Apr 24 19:15:16 2020 +0200
+
+    rows
+
+commit 4cdea1d03f89dac5a59f295d9e4372090b80b3cf
+Author: kboroszko <kajetan.boroszko@gmail.com>
+Date:   Fri Apr 24 19:12:24 2020 +0200
+
+    iters
+
+commit f420b9bbb8eedcd7b5466de2145bb4168eadb7a7
+Author: kboroszko <kajetan.boroszko@gmail.com>
+Date:   Fri Apr 24 19:06:59 2020 +0200
+
+    color
+
+commit 8d30497c624192b2eaf5b1929d58e18fb2527e16
+Author: kboroszko <kajetan.boroszko@gmail.com>
+Date:   Fri Apr 24 19:04:16 2020 +0200
+
+    sharing
+
+commit 859f1f175229b9256049196ebde1bca2bab9785c
+Author: kboroszko <kajetan.boroszko@gmail.com>
+Date:   Fri Apr 24 18:04:29 2020 +0200
+
+    added sendRecv
+
+commit 5f51cc12c823cb2a12818d4bb8577c9fdea5fce1
+Author: kboroszko <kajetan.boroszko@gmail.com>
+Date:   Fri Apr 24 16:54:50 2020 +0200
+
+    my work separate
+
+commit 6976a2f9055380ba30666504043731582ecd496b
+Author: kboroszko <kajetan.boroszko@gmail.com>
+Date:   Fri Apr 24 16:31:49 2020 +0200
+
+    printing
+
+commit 7918c01ff9814d8cd531b72021efe71b4480a5eb
+Author: kboroszko <kajetan.boroszko@gmail.com>
+Date:   Fri Apr 24 16:02:15 2020 +0200
+
+    cmake
+
+commit 2535dd6677b3edc7517e62f552b477a318cc61bb
+Author: kboroszko <kajetan.boroszko@gmail.com>
+Date:   Fri Apr 24 16:00:18 2020 +0200
+
+    CC
+
+commit cb3fe1d96276c7b3e6a01270c5d093bf372f7c94
+Author: kboroszko <kajetan.boroszko@gmail.com>
+Date:   Fri Apr 24 15:58:57 2020 +0200
+
+    gitignore
+
+commit b3cfcbdd8c7c44c9693735aa8f0b77c61327d54f
+Author: kboroszko <kajetan.boroszko@gmail.com>
+Date:   Fri Apr 24 15:57:49 2020 +0200
+
+    initial commit
