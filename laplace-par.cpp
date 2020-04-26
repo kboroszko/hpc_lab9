@@ -234,59 +234,75 @@ int main(int argc, char *argv[]) {
     auto numPointsPerDimension = inputOptions.getNumPointsPerDimension();
     auto isVerbose = inputOptions.isVerbose();
 
-    double omega = Utils::getRelaxationFactor(numPointsPerDimension);
-    double epsilon = Utils::getToleranceValue(numPointsPerDimension);
+    double omega = Utils::getRelaxationFactor(1000);
+    double epsilon = Utils::getToleranceValue(1000);
 
-    auto gridFragment = new GridFragment(numPointsPerDimension, numProcesses, myRank);
-    gridFragment->initialize();
+    int numPoints = 10 > numProcesses ? 10 : numProcesses;
+    while(numPoints < 2000){
 
-    if (isVerbose) {
-        gridFragment->printEntireGrid(myRank, numProcesses);
+        auto gridFragment = new GridFragment(numPoints, numProcesses, myRank);
+        gridFragment->initialize();
+
+        if (isVerbose) {
+            gridFragment->printEntireGrid(myRank, numProcesses);
+            if(myRank == 0){
+                std::cout << "\n";
+            }
+        }
+
+        if (gettimeofday(&startTime, nullptr)) {
+            gridFragment->free();
+            std::cerr << "ERROR: Gettimeofday failed!" << std::endl;
+            MPI_Finalize();
+            return 6;
+        }
+
+        /* Start of computations. */
+
+        auto result = performAlgorithm(myRank, numProcesses, gridFragment, omega, epsilon);
+
+        /* End of computations. */
+
+        if (gettimeofday(&endTime, nullptr)) {
+            gridFragment->free();
+            std::cerr << "ERROR: Gettimeofday failed!" << std::endl;
+            MPI_Finalize();
+            return 7;
+        }
+
+        double duration =
+                ((double) endTime.tv_sec + ((double) endTime.tv_usec / 1000000.0)) -
+                ((double) startTime.tv_sec + ((double) startTime.tv_usec / 1000000.0));
+
         if(myRank == 0){
-            std::cout << "\n";
+            std::cerr << numPoints << "\t" << numProcesses << "\t"
+                      << std::fixed
+                      << std::setprecision(10)
+                      << duration << "\t"
+                      << epsilon << "\t"
+                      << omega
+                      << std::endl;
+        }
+
+
+        if (isVerbose) {
+            gridFragment->printEntireGrid(myRank, numProcesses);
+        }
+
+        gridFragment->free();
+
+
+        if(numPoints < 200){
+            numPoints += 50;
+        } else {
+            numPoints += 200;
         }
     }
 
-    if (gettimeofday(&startTime, nullptr)) {
-        gridFragment->free();
-        std::cerr << "ERROR: Gettimeofday failed!" << std::endl;
-        MPI_Finalize();
-        return 6;
-    }
 
-    /* Start of computations. */
 
-    auto result = performAlgorithm(myRank, numProcesses, gridFragment, omega, epsilon);
 
-    /* End of computations. */
 
-    if (gettimeofday(&endTime, nullptr)) {
-        gridFragment->free();
-        std::cerr << "ERROR: Gettimeofday failed!" << std::endl;
-        MPI_Finalize();
-        return 7;
-    }
-
-    double duration =
-            ((double) endTime.tv_sec + ((double) endTime.tv_usec / 1000000.0)) -
-            ((double) startTime.tv_sec + ((double) startTime.tv_usec / 1000000.0));
-
-    std::cerr << "Statistics: duration(s)="
-              << std::fixed
-              << std::setprecision(10)
-              << duration << " #iters="
-              << std::get<0>(result)
-              << " diff="
-              << std::get<1>(result)
-              << " epsilon="
-              << epsilon
-              << std::endl;
-
-    if (isVerbose) {
-        gridFragment->printEntireGrid(myRank, numProcesses);
-    }
-
-    gridFragment->free();
     MPI_Finalize();
     return 0;
 }
