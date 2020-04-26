@@ -222,8 +222,8 @@ int main(int argc, char *argv[]) {
     auto numPointsPerDimension = inputOptions.getNumPointsPerDimension();
     auto isVerbose = inputOptions.isVerbose();
 
-    double omega = Utils::getRelaxationFactor(numPointsPerDimension);
-    double epsilon = Utils::getToleranceValue(numPointsPerDimension);
+    double omega = Utils::getRelaxationFactor(1000);
+    double epsilon = Utils::getToleranceValue(1000);
 
     int numPoints = 10 > numProcesses ? 10 : numProcesses;
     while(numPoints < 2000){
@@ -267,6 +267,8 @@ int main(int argc, char *argv[]) {
                       << std::fixed
                       << std::setprecision(10)
                       << duration << "\t"
+                      << epsilon << "\t"
+                      << omega
                       << std::endl;
         }
 
