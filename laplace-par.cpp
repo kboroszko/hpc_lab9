@@ -67,7 +67,7 @@ static InputOptions parseInput(int argc, char * argv[], int numProcesses) {
     return {numPointsPerDimension, verbose, errorCode};
 }
 
-static void sendRecv(int myRank, int numProcesses, double* buffFrom, double* buffTo, int buffSize, bool clockwise, MPI_Request reqs){
+static void sendRecv(int myRank, int numProcesses, double* buffFrom, double* buffTo, int buffSize, bool clockwise, MPI_Request* reqs){
     int rankFrom, rankTo;
     if(clockwise){
         rankTo = (myRank + 1) % numProcesses;
