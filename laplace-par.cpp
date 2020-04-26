@@ -77,7 +77,7 @@ static void sendRecv(int myRank, int numProcesses, double* buffFrom, double* buf
         rankTo = myRank == 0 ? numProcesses - 1 : myRank - 1;
     }
     MPI_Isend(buffFrom, buffSize, MPI_DOUBLE, rankTo, clockwise, MPI_COMM_WORLD, reqs);
-    MPI_Irecv(buffTo, buffSize, MPI_DOUBLE, rankFrom, clockwise, MPI_COMM_WORLD, MPI_STATUS_IGNORE, reqs + 1);
+    MPI_Irecv(buffTo, buffSize, MPI_DOUBLE, rankFrom, clockwise, MPI_COMM_WORLD, reqs + 1);
 }
 
 static std::tuple<int, double> performAlgorithm(int myRank, int numProcesses, GridFragment *frag, double omega, double epsilon) {
