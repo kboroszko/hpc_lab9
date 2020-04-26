@@ -7,8 +7,11 @@ noopt5  = np.genfromtxt('results/noopt/par5.err', delimiter='\t')
 noopt12 = np.genfromtxt('results/noopt/par12.err', delimiter='\t')
 noopt24 = np.genfromtxt('results/noopt/par24.err', delimiter='\t')
 noopt48 = np.genfromtxt('results/noopt/par48.err', delimiter='\t')
+
+noopt2_async  = np.genfromtxt('results/async/par2.err', delimiter='\t')
 #%%
 plt.plot(seq[:,0], seq[:, 1], label='seq')
 plt.plot(noopt2[:, 0], noopt2[:, 2], label='noopt2')
+plt.plot(noopt2_async[:, 0], noopt2_async[:, 2], label='noopt2_async')
 plt.legend()
 plt.show()
