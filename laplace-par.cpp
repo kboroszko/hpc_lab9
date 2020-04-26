@@ -68,8 +68,8 @@ static InputOptions parseInput(int argc, char * argv[], int numProcesses) {
 }
 
 static std::tuple<int, double> performAlgorithm(int myRank, int numProcesses, GridFragment *frag, double omega, double epsilon) {
-    int startRowIncl = frag->firstRowIdxIncl + (myRank == 0 ? 1 : 0);
-    int endRowExcl = frag->lastRowIdxExcl - (myRank == numProcesses - 1 ? 1 : 0);
+    int startRowIncl = frag->firstRowIdxIncl + 1;
+    int endRowExcl = frag->lastRowIdxExcl - 1;
 
     double maxDiff = 0;
     int numIterations = 0;
@@ -78,6 +78,9 @@ static std::tuple<int, double> performAlgorithm(int myRank, int numProcesses, Gr
     /* and computation of the grid */
     /* the following code just recomputes the appropriate grid fragment */
     /* but does not communicate the partial results */
+
+    //communicate color 1 for start
+
     do {
         maxDiff = 0.0;
 
@@ -121,9 +124,49 @@ static std::tuple<int, double> performAlgorithm(int myRank, int numProcesses, Gr
                 MPI_Send(my_row_top, bufSize, MPI_DOUBLE, myRank - 1, 0, MPI_COMM_WORLD );
             }
 
+            // my work
 //            int start = myRank == 0 ? startRowIncl : startRowIncl + 1;
 //            int end = myRank == numProcesses - 1 ? endRowExcl : endRowExcl - 1;
             for (int rowIdx = startRowIncl; rowIdx < endRowExcl; ++rowIdx) {
+                for (int colIdx = 1 + (rowIdx % 2 == color ? 1 : 0); colIdx < frag->gridDimension - 1; colIdx += 2) {
+                    double tmp =
+                            (GP(frag, rowIdx - 1, colIdx) +
+                             GP(frag, rowIdx + 1, colIdx) +
+                             GP(frag, rowIdx, colIdx - 1) +
+                             GP(frag, rowIdx, colIdx + 1)
+                            ) / 4.0;
+                    double diff = GP(frag, rowIdx, colIdx);
+                    GP(frag, rowIdx, colIdx) = (1.0 - omega) * diff + omega * tmp;
+                    diff = fabs(diff - GP(frag, rowIdx, colIdx));
+
+                    if (diff > maxDiff) {
+                        maxDiff = diff;
+                    }
+                }
+            }
+            // shared work
+
+            if(myRank != 0){
+                int rowIdx = frag->firstRowIdxIncl;
+                for (int colIdx = 1 + (rowIdx % 2 == color ? 1 : 0); colIdx < frag->gridDimension - 1; colIdx += 2) {
+                    double tmp =
+                            (GP(frag, rowIdx - 1, colIdx) +
+                             GP(frag, rowIdx + 1, colIdx) +
+                             GP(frag, rowIdx, colIdx - 1) +
+                             GP(frag, rowIdx, colIdx + 1)
+                            ) / 4.0;
+                    double diff = GP(frag, rowIdx, colIdx);
+                    GP(frag, rowIdx, colIdx) = (1.0 - omega) * diff + omega * tmp;
+                    diff = fabs(diff - GP(frag, rowIdx, colIdx));
+
+                    if (diff > maxDiff) {
+                        maxDiff = diff;
+                    }
+                }
+            }
+
+            if(myRank != numProcesses - 1){
+                int rowIdx = frag->lastRowIdxExcl - 1;
                 for (int colIdx = 1 + (rowIdx % 2 == color ? 1 : 0); colIdx < frag->gridDimension - 1; colIdx += 2) {
                     double tmp =
                             (GP(frag, rowIdx - 1, colIdx) +
